@@ -1,4 +1,5 @@
-﻿using Demo.Interfaces;
+﻿using Demo.Areas.Customer.ViewModels;
+using Demo.Interfaces;
 using Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -16,9 +17,19 @@ namespace Demo.Areas.Customer.Controllers.Home
 
         }
 
+
+
+        public MenuItemVM MenuItemObj { get; set; }
         public ViewResult Index()
         {
-            return View();
+            MenuItemObj = new MenuItemVM
+            {
+                MenuItemList = _unitOfWork.MenuItem.List(null, null, "Category,FoodType"),
+                CategoryList = _unitOfWork.Category.List(null, c => c.DisplayOrder, null)
+            };
+
+            return View(MenuItemObj);
         }
+
     }
 }

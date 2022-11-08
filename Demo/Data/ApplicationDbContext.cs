@@ -14,5 +14,6 @@ namespace Demo.Data
         }
         public DbSet<Category> Category { get; set; }
         public DbSet<FoodType> FoodType { get; set; }
+        public DbSet<MenuItem> MenuItem { get; set; }
     }
 }

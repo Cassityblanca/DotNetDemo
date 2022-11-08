@@ -13,6 +13,7 @@ public class CategoryController : Controller
 
     }
 
+
     public ViewResult Index()
     {
         IEnumerable<Category> objCategoryList = _unitOfWork.Category.GetAll();

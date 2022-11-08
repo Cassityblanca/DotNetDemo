@@ -1,20 +1,43 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Demo.Areas.Customer.ViewModels.MenuItemVM
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Our Menu Items will be publically displayed here</h1>
-    <p>Example</p>
-    <hr/>
-    <p>Category:  Beverages</p>
-    <p>Food Type:  Carbonated</p>
-    <p>Menu Item:  Coke Classic 12 oz Can - $1.49</p>
-    <hr />
-    <p>Category:  Beverages</p>
-    <p>Food Type:  Sugar Free</p>
-    <p>Menu Item:  Coke Zero 20 oz Bottle - $2.19</p>
-    <hr />
-    <p>Category:  Salads</p>
-    <p>Food Type:  Chicken</p>
-    <p>Menu Item:  Chicken Cobb Salad - $5.99</p>
-</div>
+@foreach (var category in Model.CategoryList)
+{
+    @if (Model.MenuItemList.Where(c => c.CategoryId == category.Id).Count() > 0)
+    {
+        <div class="row container pb-3 backgroundWhite">
+            <div class="col-12">
+                <div class="row">
+                    <h2 class="text-success pl-1"><b>@category.Name</b></h2>
+                    <div class="col-12">
+                        <div class="row my-3">
+                            @foreach (var menuItem in Model.MenuItemList.Where(c => c.CategoryId == category.Id))
+                            {
+                                <div class="col-lg-3 col-xl-3 col-md-6 pb-4" style="max-width:35%">
+                                    <div class="card" style="border:2px solid #008cba; border-radius: 5px;">
+                                        <div class="pl-3 pt-1 text-center">
+                                            <h3 class="card-title text-primary"><b>@menuItem.Name</b></h3>
+                                        </div>
+                                        <div class="d-flex justify-content-between form-control" style="border:0px;">
+                                            <div class="badge bg-warning text-center"
+                                     style="font-size:12px;">
+                                                @menuItem.FoodType.Name
+                                            </div>
+                                            <div class="col-6 text-end h4" style="color:maroon; max-width:70%">
+                                                <b>$@menuItem.Price.ToString("0.00")</b>
+                                            </div>
+                                        </div><img src="@menuItem.Image" class="card-img-top p-2 rounded" />
+
+                                        <a class="btn btn-primary" style="border-radius:2px;" asp-controller="Home" asp-action="Details" asp-route-id="@menuItem.Id">Details</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

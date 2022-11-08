@@ -7,7 +7,9 @@ namespace Demo.Interfaces
         //Data Accessors
         public IRepository<Category> Category { get; }
         public IRepository<FoodType> FoodType { get; }
-       
+        public IRepository<MenuItem> MenuItem { get; }
+
+
         //save changes to data source
         void Commit();
         //same but an Asynchronous Commit

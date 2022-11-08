@@ -48,6 +48,18 @@ namespace Demo.Data
         {
             _dbContext.SaveChanges();
         }
+
+        //New for menuitem assignment
+        private IRepository<MenuItem> _MenuItem;
+        public IRepository<MenuItem> MenuItem
+        {
+            get
+            {
+                _MenuItem ??= new Repository<MenuItem>(_dbContext);
+                return _MenuItem;
+            }
+        }
+
     }
 }
 

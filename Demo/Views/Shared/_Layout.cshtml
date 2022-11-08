@@ -6,6 +6,15 @@
 	<title>@ViewData["Title"] - Demo</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
+	<!-- Tueday: working ahead and adding the 4 lines below from the word doc-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+	<script src="https://cdn.tiny.cloud/1/fn0yp8pr1j966xle99079uayekv9srknikl9lxbqrkcbcsxk/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 </head>
 <body>
 	<header>
@@ -23,17 +32,17 @@
 						</li>
 
 
-										<li class="nav-item dropdown">
-											<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-											<div class="dropdown-menu">
-												<a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-												<a class="dropdown-item" asp-area="Admin" asp-controller="FoodType" asp-action="Index">Food Type</a>
-												<a class="dropdown-item" asp-area="Admin" asp-controller="MenuItem" asp-action="Index">Menu Item</a>
-												<div class="dropdown-divider"></div>
-												<a class="dropdown-item" asp-area="Admin" asp-page="/Users/Index">Manage Users</a>
-												<a class="dropdown-item" asp-area="Admin" asp-page="/Roles/Index">Manage Roles</a>
-											</div>
-										</li>	
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+								<a class="dropdown-item" asp-area="Admin" asp-controller="FoodType" asp-action="Index">Food Type</a>
+								<a class="dropdown-item" asp-area="Admin" asp-controller="MenuItems" asp-action="Index">Menu Item</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" asp-area="Admin" asp-page="/Users/Index">Manage Users</a>
+								<a class="dropdown-item" asp-area="Admin" asp-page="/Roles/Index">Manage Roles</a>
+							</div>
+						</li>	
 					</ul>
 					<partial name="_LoginPartial" />
 				</div>
