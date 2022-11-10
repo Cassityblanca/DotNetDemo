@@ -72,6 +72,8 @@
                     <div class="col-9">
                         <!-- very advanced. Using an html helper tag to create a dropdown list, map it to an html control,
                             and display the info about the foodtype and menu items.Apparently this is reusable.
+
+                            vvvv On the MenuItem page, these are the dropdowns. vvvv
                         -->
                         @Html.DropDownListFor(m => m.MenuItem.FoodTypeId,
                         Model.FoodTypeList,
@@ -111,3 +113,38 @@
         </div>
     </div>
 </form>
+
+<!-- inserted javascript. ValidateInput() is called above, with the onclick="return ValidateInput()" above. -->
+@section Scripts{ 
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: "lists",
+            menubar: "file edit format"
+        });
+        function ValidateInput() {
+            if (document.getElementById("name").value == "") {
+                swal('Error', 'Please enter a Name', 'error')
+                return false;
+            }
+            if (document.getElementById("price").value == "0") {
+                swal('Error', 'Please enter a Price', 'error')
+                return false;
+            }
+            if (document.getElementById("uploadImgBox").value == "") {
+                swal('Error', 'Please select an Image', 'error')
+                return false;
+            }
+            if ($('#ddlCategory option:selected').val() == 0) {
+                swal('Error', 'Please select a Category', 'error')
+                return false;
+            }
+            if ($('#ddlFoodType option:selected').val() == 0) {
+                swal('Error', 'Please select a Category', 'error')
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+

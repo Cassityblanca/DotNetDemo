@@ -16,7 +16,7 @@ public class MenuItemsController : Controller
     public MenuItemsController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)//Dependency Injection & path to wwwroot folder
     {
         _unitOfWork = unitOfWork;
-        _hostEnvironment = hostEnvironment;
+        _hostEnvironment = hostEnvironment; 
     }
 
 
@@ -29,12 +29,12 @@ public class MenuItemsController : Controller
     }
 
 
-    //Upsert stuff
+    //////Upsert stuff
     private readonly IWebHostEnvironment _hostEnvironment;
 
     //Bind apparently solves some headaches by binding the model to our forum
     [BindProperty]
-    public MenuItemVM MenuItemObj { get; set; }
+    public MenuItemVM MenuItemObj { get; set; } 
 
 
     /*
@@ -69,7 +69,7 @@ public class MenuItemsController : Controller
 
 
     [HttpPost]
-    public IActionResult Upsert()
+    public IActionResult Upsert() //note the lack of paramters. The menu item from the form comes from the [BindProperty] declaration.
     {
         string webRootPath = _hostEnvironment.WebRootPath; //give root location
         var files = HttpContext.Request.Form.Files;
@@ -84,16 +84,19 @@ public class MenuItemsController : Controller
             if (files.Count > 0)
             {
                 string fileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webRootPath, @"images\menuitems\");
-                var extension = Path.GetExtension(files[0].FileName);
-                var fullpath = uploads + fileName + extension;
+                var uploads = Path.Combine(webRootPath, @"images\menuitems\"); //appends webrootpath (the path of whatever is running our server) + images\menuitems
+                var extension = Path.GetExtension(files[0].FileName);  //^^the @ sign means 'this string is literal, no escapes'
+                var fullpath = uploads + fileName + extension; //full path is their file name, our random rename, and the extension.
+                //if we had multiple files, we could loop through the files array rather than just files[0]
 
-                using (var fileStream = System.IO.File.Create(fullpath))
+
+                using (var fileStream = System.IO.File.Create(fullpath)) //stream the image as a binary file
                 {
                     files[0].CopyTo(fileStream);
                 }
 
-                MenuItemObj.MenuItem.Image = @"\images\menuitems\" + fileName + extension;
+                //the database has an image property, now save that property as a string as a path to the image. So the IMAGE ITSELF is NOT saved to the value image, the PATH to the image is saved.
+                MenuItemObj.MenuItem.Image = @"\images\menuitems\" + fileName + extension; 
             }
 
             _unitOfWork.MenuItem.Add(MenuItemObj.MenuItem);
@@ -136,6 +139,53 @@ public class MenuItemsController : Controller
         _unitOfWork.Commit();
         return RedirectToAction("Index");
     }
+
+    [HttpGet]
+    public IActionResult Delete(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+
+        var menuItemFromDb = _unitOfWork.MenuItem.Get(m => m.Id == id);
+
+        if (menuItemFromDb == null)
+        {
+            return NotFound();
+        }
+
+        return View(menuItemFromDb);
+
+    }
+
+
+    [HttpPost, ActionName("Delete")]
+    public IActionResult DeletePost(int? id)
+    {
+        var menuItemFromDb = _unitOfWork.MenuItem.Get(m => m.Id == id);
+        if (menuItemFromDb == null)
+        { return NotFound(); }
+
+        string webRootPath = _hostEnvironment.WebRootPath; //give root location
+        string fileName = Guid.NewGuid().ToString();
+        var uploads = Path.Combine(webRootPath, @"images\menuitems\");
+        var extension = Path.GetExtension(fileName);
+
+        if (menuItemFromDb.Image != null)
+        {
+            var imagePath = Path.Combine(webRootPath, menuItemFromDb.Image.TrimStart('\\'));
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath); //physically deleting the file
+            }
+        }
+
+        _unitOfWork.MenuItem.Delete(menuItemFromDb);
+        _unitOfWork.Commit();
+        return RedirectToAction("Index");
+    }
+
 }
 
 
