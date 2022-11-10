@@ -1,0 +1,42 @@
+﻿@page
+@model Demo.Areas.Admin.Pages.Roles.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="border-bottom backgroundWhite container">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-primary">Role List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-page="/Roles/Update" asp-area="Admin" class="btn btn-primary"><i class="bi bi-plus-circle"></i>&nbsp; Create New</a>
+        </div>
+    </div>
+    <br /><br />
+    
+    <p class="text-success" id="message">@Model.Message</p>
+    <table class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">Role</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                foreach (var role in Model.AllRoles)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>
+                            <a class="btn btn-outline-success" asp-area="Admin" asp-page="/Roles/Update" asp-route-id="@role.Id">Update</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -8,6 +8,7 @@ namespace Demo.Interfaces
         public IRepository<Category> Category { get; }
         public IRepository<FoodType> FoodType { get; }
         public IRepository<MenuItem> MenuItem { get; }
+        public IRepository<ApplicationUser> ApplicationUser { get; }
 
 
         //save changes to data source

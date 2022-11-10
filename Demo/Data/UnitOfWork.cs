@@ -60,6 +60,17 @@ namespace Demo.Data
             }
         }
 
+
+        private IRepository<ApplicationUser> _ApplicationUser;
+        public IRepository<ApplicationUser> ApplicationUser
+        {
+            get
+            {
+                _ApplicationUser ??= new Repository<ApplicationUser>(_dbContext);
+                return _ApplicationUser;
+            }
+        }
+
     }
 }
 
