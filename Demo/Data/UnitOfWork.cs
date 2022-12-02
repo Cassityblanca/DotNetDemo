@@ -15,6 +15,27 @@ namespace Demo.Data
         }
         private IRepository<Category> _Category;
         private IRepository<FoodType> _FoodType;
+        private IRepository<ShoppingCart> _ShoppingCart;
+        private IRepository<OrderHeader> _OrderHeader;
+
+        public IRepository<ShoppingCart> ShoppingCart
+        {
+            get
+            {
+
+                _ShoppingCart ??= new Repository<ShoppingCart>(_dbContext);
+                return _ShoppingCart;
+            }
+        }
+        public IRepository<OrderHeader> OrderHeader
+        {
+            get
+            {
+
+                _OrderHeader ??= new Repository<OrderHeader>(_dbContext);
+                return _OrderHeader;
+            }
+        }
 
         public IRepository<Category> Category
         {

@@ -24,7 +24,8 @@
 							<a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
 
-
+						<!-- AT if(User.IsInRole("Admin"))  -->
+						<!--{  -->
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
 							<div class="dropdown-menu">
@@ -35,7 +36,8 @@
 								<a class="dropdown-item" asp-area="Admin" asp-page="/Users/Index">Manage Users</a>
 								<a class="dropdown-item" asp-area="Admin" asp-page="/Roles/Index">Manage Roles</a>
 							</div>
-						</li>	
+						</li>
+						<!--}  -->
 					</ul>
 					<partial name="_LoginPartial" />
 				</div>

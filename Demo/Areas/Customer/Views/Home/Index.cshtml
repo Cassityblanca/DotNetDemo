@@ -30,7 +30,7 @@
                                             </div>
                                         </div><img src="@menuItem.Image" class="card-img-top p-2 rounded" />
 
-                                        <a class="btn btn-primary" style="border-radius:2px;" asp-controller="Home" asp-action="Details" asp-route-id="@menuItem.Id">Details</a>
+                                        <a class="btn btn-primary" style="border-radius:2px;" asp-controller="Home" asp-action="Details" asp-route-menuItemId="@menuItem.Id">Details</a> <!-- asp-route-menuItemId, menuItemId is the name of the variable we're passing. If we were passing schoolID, it'd need to be asp-route-shoolID -->
                                     </div>
                                 </div>
                             }

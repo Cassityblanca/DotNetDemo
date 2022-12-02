@@ -9,6 +9,8 @@ namespace Demo.Interfaces
         public IRepository<FoodType> FoodType { get; }
         public IRepository<MenuItem> MenuItem { get; }
         public IRepository<ApplicationUser> ApplicationUser { get; }
+        public IRepository<ShoppingCart> ShoppingCart { get; }
+        public IRepository<OrderHeader> OrderHeader { get; }
 
 
         //save changes to data source

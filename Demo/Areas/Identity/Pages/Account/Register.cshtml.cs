@@ -1,4 +1,6 @@
-﻿using Demo.Models;
+﻿#nullable disable
+
+using Demo.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -22,24 +24,24 @@ namespace Demo.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        //private readonly IEmailSender _emailSender;
+        private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            RoleManager<IdentityRole> roleManager)
-        //IEmailSender emailSender)
-        {
-            _userManager = userManager;
-            _userStore = userStore;
-            _emailStore = GetEmailStore();
-            _signInManager = signInManager;
-            _logger = logger;
-            _roleManager = roleManager;
-            //_emailSender = emailSender;
-        }
+            RoleManager<IdentityRole> roleManager,
+            IEmailSender emailSender)
+            {
+                _userManager = userManager;
+                _userStore = userStore;
+                _emailStore = GetEmailStore();
+                _signInManager = signInManager;
+                _logger = logger;
+                _roleManager = roleManager;
+                _emailSender = emailSender;
+            }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -154,25 +156,28 @@ namespace Demo.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    //if (Input.Role == null)
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, "Customer");
-                    //}
-                    //else
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, Input.Role);
-                    //}                    
+                    if (Input.Role == null)
+                    {
+                        //NOTES FROM FRY: "If this is the very first account we're creating, make it an admin."
+                        //Reminder that this is the aspnetusers table
+                        await _userManager.AddToRoleAsync(user, "Customer");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                    }
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
+                    var callbackUrl = Url.Page( 
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId, code, returnUrl },
                         protocol: Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    string v = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."; ;
+                    //This is what actually sends the email
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.") ;
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
